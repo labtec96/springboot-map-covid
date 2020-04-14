@@ -1,9 +1,12 @@
 package com.example.springbootmapinit.controllers;
 
 import com.example.springbootmapinit.domain.Point;
+import com.example.springbootmapinit.services.Covid19Parser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.io.IOException;
 
 /**
  * Created by ch on 2020-04-14
@@ -11,9 +14,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MapController {
 
+    private Covid19Parser covid19Parser;
+
+    public MapController(Covid19Parser covid19Parser) {
+        this.covid19Parser = covid19Parser;
+    }
+
     @GetMapping
-    public String getMap(Model model){
-        model.addAttribute("point" , new Point(52.237049,21.017532,"hehe"));
+    public String getMap(Model model) throws IOException {
+        model.addAttribute("points" , covid19Parser.getCovidData());
         return "map.html";
     }
 }
