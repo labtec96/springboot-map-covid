@@ -1,6 +1,6 @@
-package com.example.controllers;
+package com.example.springbootmapinit.controllers;
 
-import com.example.domain.Point;
+import com.example.springbootmapinit.domain.Point;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MapController {
 
-    @GetMapping("")
+    @GetMapping
     public String getMap(Model model){
         model.addAttribute("point" , new Point(52.237049,21.017532,"hehe"));
         return "map.html";

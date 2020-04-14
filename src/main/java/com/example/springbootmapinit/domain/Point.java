@@ -1,4 +1,4 @@
-package com.example.domain;
+package com.example.springbootmapinit.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
