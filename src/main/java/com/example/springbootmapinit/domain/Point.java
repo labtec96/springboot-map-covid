@@ -16,6 +16,6 @@ public class Point {
 
     private double lat;
     private double lon;
-    private String text;
-
+    private String cases;
+    private String Country;
 }
