@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.springframework.org/schema/mvc">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>COVID-19 Cases</title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
           integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
@@ -33,25 +33,32 @@
 
         var points = [[${points}]]
 
-        var map = L.map('mapid').setView([111.591, 11.659], 6);
+        var map = L.map('mapid').setView([111.591, 11.659], 5);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            noWrap: true,
+            minZoom: 2.5
         }).addTo(map);
 
-        function markerColor(cases){
-            if (cases <= 1000)
-                return 'lightgreen';
-            else if (cases >1000 && cases<=5000)
-                return 'green';
-            else if (cases >5000 && cases<=20000)
-                return 'darkgreen';
-            else if (cases >20000 && cases<=50000)
-                return 'red';
-            else if (cases >50000 && cases<=100000)
-                return 'darkred';
-            else if (cases>=100000)
-                return 'black';
+        var southWest = L.latLng(-89.98155760646617, -180),
+            northEast = L.latLng(89.99346179538875, 180);
+        var bounds = L.latLngBounds(southWest, northEast);
+
+        map.setMaxBounds(bounds);
+        function markerColor(casesPerOneMillion){
+            if (casesPerOneMillion <= 50)
+                return 'FFD1A9';
+            else if (casesPerOneMillion >50 && casesPerOneMillion<=100)
+                return 'FF9E79';
+            else if (casesPerOneMillion >100 && casesPerOneMillion<=500)
+                return 'FB6D4C';
+            else if (casesPerOneMillion >500 && casesPerOneMillion<=1000)
+                return 'C23B22';
+            else if (casesPerOneMillion >1000 && casesPerOneMillion<2000)
+                return 'BA000';
+            else if (casesPerOneMillion>=2000)
+                return '58000';
         }
 
         function getMarker(color) {
@@ -64,12 +71,12 @@
         points.forEach(function (value) {
             //console.log(value.lat + " " + value.lon);
 
-            var markerColorVar = markerColor(value.cases);
+            var markerColorVar = markerColor(value.casesPerOneMillion);
 
             var  marker = getMarker(markerColorVar);
 
             L.marker([value.lat, value.lon], {icon: marker}).addTo(map)
-                .bindPopup(value.country + ": " + value.cases)
+                .bindPopup(value.country + " cases: " + value.cases + ", cases/1M pop: " + value.casesPerOneMillion)
                 .openPopup()
         })
 

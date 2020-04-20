@@ -6,7 +6,7 @@ Version: 1.0
 
 /* Marker setup */
 .awesome-marker {
-    background: url('../images/markers-soft.png') no-repeat 0 0;
+    background: url('../images/markers-soft1.png') no-repeat 0 0;
     width: 35px;
     height: 46px;
     position:absolute;
@@ -47,11 +47,11 @@ Version: 1.0
 }
 
 /* Colors */
-.awesome-marker-icon-red {
+.awesome-marker-icon-FFD1A9 {
     background-position: 0 0;
 }
 
-.awesome-marker-icon-darkred {
+.awesome-marker-icon-58000 {
     background-position: -180px 0;
 }
 
@@ -59,7 +59,7 @@ Version: 1.0
     background-position: -360px 0;
 }
 
-.awesome-marker-icon-orange {
+.awesome-marker-icon-FF9E79 {
     background-position: -36px 0;
 }
 
@@ -67,7 +67,7 @@ Version: 1.0
     background-position: -396px 0;
 }
 
-.awesome-marker-icon-green {
+.awesome-marker-icon-FB6D4C {
     background-position: -72px 0;
 }
 
@@ -79,7 +79,7 @@ Version: 1.0
     background-position: -432px 0;
 }
 
-.awesome-marker-icon-blue {
+.awesome-marker-icon-C23B22 {
     background-position: -108px 0;
 }
 
@@ -91,7 +91,7 @@ Version: 1.0
     background-position: -468px 0;
 }
 
-.awesome-marker-icon-purple {
+.awesome-marker-icon-BA000 {
     background-position: -144px 0;
 }
 
