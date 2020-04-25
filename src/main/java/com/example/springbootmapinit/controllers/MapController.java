@@ -1,6 +1,5 @@
 package com.example.springbootmapinit.controllers;
 
-import com.example.springbootmapinit.domain.Point;
 import com.example.springbootmapinit.services.Covid19Parser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +21,8 @@ public class MapController {
 
     @GetMapping
     public String getMap(Model model) throws IOException {
-        model.addAttribute("points" , covid19Parser.getCovidData());
+        model.addAttribute("points" , covid19Parser.getCovidData("today"));
+        model.addAttribute("pointsYesterday", covid19Parser.getCovidData("yesterday"));
         return "map.html";
     }
 }

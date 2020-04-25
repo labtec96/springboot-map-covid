@@ -23,12 +23,21 @@ import java.util.List;
 public class Covid19Parser {
 
     private static final String url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
-    private static final String urlCoronaLmaoNinja = "https://corona.lmao.ninja/v2/countries";
-    public List<Point> getCovidData() throws IOException {
+    private static final String urlCoronaLmaoNinjaToday = "https://corona.lmao.ninja/v2/countries";
+    private static final String getUrlCoronaLmaoNinjaYesterday = "https://corona.lmao.ninja/v2/countries?yesterday=true";
+    public List<Point> getCovidData(String date) throws IOException {
+
+        String url = null;
+        if(date.equals("today"))
+            url = urlCoronaLmaoNinjaToday;
+        else if(date.equals("yesterday"))
+            url = getUrlCoronaLmaoNinjaYesterday;
+
+
         List<Point> points = new ArrayList<>();
         JSONParser parser = new JSONParser();
         try {
-            URL data = new URL(urlCoronaLmaoNinja); // URL to Parse
+            URL data = new URL(url); // URL to Parse
             URLConnection yc = data.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
 
@@ -63,25 +72,8 @@ public class Covid19Parser {
             e.printStackTrace();
         }
 
-
-
-        /*RestTemplate restTemplate = new RestTemplate();
-        String values = restTemplate.getForObject(url, String.class);
-
-        StringReader stringReader = new StringReader(values);
-
-        CSVParser parse = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(stringReader);
-
-        for (CSVRecord strings : parse) {
-            String yesterdayDate = Utils.getDatOfYesterday();
-
-            double lat = Double.parseDouble(strings.get("Lat"));
-            double lon = Double.parseDouble(strings.get("Long"));
-            String cases = strings.get(yesterdayDate);
-            String country = strings.get("Country/Region");
-            points.add(new Point(lat,lon,cases,country));
-        }
-           */
         return points;
     }
+
+
 }
