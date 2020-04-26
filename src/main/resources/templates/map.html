@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
     <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
-    <script src="js/leaflet.awesome-markers.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
 
     <link rel="stylesheet" href="css/all.min.css">
     <script src="js/all.min.js"></script>
@@ -38,10 +38,11 @@
             margin: 0;
         }
         #mapid {
-            height: calc(100% - 55px); ;
+            height: calc(100% - 55px);
             top: -20px;
             left: 0;
             width: 100%;
+            z-index: 1;
         }
         #navbar navbar-inverse{
             position: absolute;
@@ -49,6 +50,29 @@
         }
         .toggle.btn {
             margin-top: 8px;
+        }
+        .table{
+            position:absolute;
+            top: 75px;
+            right: 10px;
+            z-index: 2;
+            width: 300px;
+            background: #333333;
+        }
+
+        table td,th,tr{
+            color:#eeeeee;
+        }
+
+        td,th{
+            width:auto;
+        }
+
+        caption{
+            text-align: center;
+            font-weight: bold;
+            font-size: 17px;
+            color: white;
         }
     </style>
 </head>
@@ -64,7 +88,29 @@
     </div>
 </nav>
 
+<table class="table table-borderless">
+    <caption>Highest increase since yesterday</caption>
+    <thead>
+    <tr>
+        <th scope="col"></th>
+        <th scope="col">Country</th>
+        <th scope="col">New cases</th>
+        <th scope="col">Cases</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="country : ${countriesHighestIncrease}">
+        <th scope="row"></th>
+        <td><span th:text="${country.name}"> Country </span></td>
+        <td><span th:text="${'+' +country.todayNewCases}"> Today new cases </span></td>
+        <td><span th:text="${country.allCasesToday}"> Today new cases </span></td>
+    </tr>
+    </tbody>
+</table>
+
 <div id="mapid"></div>
+
+
 
     <script th:inline="javascript">
 
@@ -84,15 +130,14 @@
         })
 
 
-        var points = [[${points}]]
+        var countries = [[${countries}]];
+        var countriesHighestIncrease = [[${countriesHighestIncrease}]];
 
-        var pointsYesterday = [[${pointsYesterday}]]
-
-        var map = L.map('mapid').setView([111.591, 11.659], 5);
+        var map = L.map('mapid').setView([52.237049,21.017532], 6);
 
         layerGroupToday = L.layerGroup().addTo(map);
         layerGroupYesterday = L.layerGroup().addTo(map);
-
+        map.removeLayer(layerGroupToday);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             noWrap: true,
@@ -123,31 +168,23 @@
             var marker = L.AwesomeMarkers.icon({
                 markerColor: color,
                 icon: 'alert',
-                iconColor: 'black'
+                iconColor: '#ececec'
             });
             return marker;
         }
 
-        points.forEach(function (value) {
-            //console.log(value.lat + " " + value.lon);
-            var markerColorVar = markerColor(value.casesPerOneMillion);
-
+        countries.forEach(function (value) {
+            //console.log(value.point.lat + " " + value.point.lon);
+            var markerColorVar = markerColor(value.casesPerOneMillionToday);
             var  marker = getMarker(markerColorVar);
+            L.marker([value.point.lat, value.point.lon], {icon: marker}).addTo(layerGroupToday)
+                .bindPopup("<b><center>" + value.name + "</b></center>" + "<br> Cases: " + value.allCasesToday + "<br>Cases/1M pop: " + value.casesPerOneMillionToday)
 
-            L.marker([value.lat, value.lon], {icon: marker}).addTo(layerGroupToday)
-                .bindPopup("<b><center>" + value.country + "</b></center>" + "<br> Cases: " + value.cases + "<br>Cases/1M pop: " + value.casesPerOneMillion)
-                .openPopup()
-        })
 
-        pointsYesterday.forEach(function (value) {
-            //console.log(value.lat + " " + value.lon);
-            var markerColorVar = markerColor(value.casesPerOneMillion);
-
+            var markerColorVar = markerColor(value.casesPerOneMillionYesterday);
             var  marker = getMarker(markerColorVar);
-
-            L.marker([value.lat, value.lon], {icon: marker}).addTo(layerGroupYesterday)
-                .bindPopup("<b><center>" + value.country + "</b></center>" + "<br> Cases: " + value.cases + "<br>Cases/1M pop: " + value.casesPerOneMillion)
-                .openPopup()
+            L.marker([value.point.lat, value.point.lon], {icon: marker}).addTo(layerGroupYesterday)
+                .bindPopup("<b><center>" + value.name + "</b></center>" + "<br> Cases: " + value.allCasesYesterday + "<br>Cases/1M pop: " + value.casesPerOneMillionYesterday)
         })
 
     </script>
