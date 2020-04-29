@@ -27,7 +27,9 @@ public class Utils {
     public BufferedReader getBufferReaderFromUrl(String url) throws IOException {
         URL data = new URL(url); // URL to Parse
         URLConnection yc = data.openConnection();
-
+        yc.addRequestProperty("User-Agent", "Mozilla");
+        yc.setReadTimeout(5000);
+        yc.setConnectTimeout(5000);
         return new BufferedReader(new InputStreamReader(yc.getInputStream()));
     }
 }
