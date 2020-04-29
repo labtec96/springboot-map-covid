@@ -3,6 +3,7 @@ package com.example.springbootmapinit.services;
 import com.example.springbootmapinit.domain.Country;
 import com.example.springbootmapinit.domain.Point;
 import com.example.springbootmapinit.util.Utils;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,6 +20,8 @@ import java.util.Map;
 /**
  * Created by ch on 2020-04-14
  */
+
+@Slf4j
 @Service
 public class Covid19Parser {
 
@@ -37,7 +40,7 @@ public class Covid19Parser {
 
 
     private void getCovidData(String url, boolean getCountryInfo) {
-
+        log.info("Get Covid Data");
         JSONParser parser = new JSONParser();
         try {
             BufferedReader readerFromUrl = Utils.getBufferReaderFromUrl(url);
@@ -83,6 +86,7 @@ public class Covid19Parser {
     }
 
     public List<Country> getHighestIncrease() {
+        log.info("Get Highest Increase");
         JSONParser parser = new JSONParser();
         List<Country> countriesHighestIncrease = new ArrayList<>();
 
