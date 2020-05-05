@@ -23,7 +23,6 @@ public class MapController {
     public String getMap(Model model){
         log.info("Get Mapping");
         System.out.println("Get Mapping");
-        covid19Parser.getCovidData();
         model.addAttribute("countries" , covid19Parser.getCovidData());
         model.addAttribute("countriesHighestIncrease", covid19Parser.getHighestIncrease());
         return "map.html";
