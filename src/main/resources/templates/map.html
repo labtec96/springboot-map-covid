@@ -131,7 +131,6 @@
 
 
         var countries = [[${countries}]];
-        var countriesHighestIncrease = [[${countriesHighestIncrease}]];
 
         var map = L.map('mapid').setView([52.237049,21.017532], 6);
 
@@ -179,13 +178,14 @@
             var markerColorVar = markerColor(value.casesPerOneMillionToday);
             var  marker = getMarker(markerColorVar);
             L.marker([value.point.lat, value.point.lon], {icon: marker}).addTo(layerGroupToday)
-                .bindPopup("<b><center>" + value.name + "</b></center>" + "<br> Cases: " + value.allCasesToday + "<br>Cases/1M pop: " + value.casesPerOneMillionToday)
+                .bindPopup("<b><center>" + value.name + "</b></center>" + "<br> Cases: " + value.allCasesToday.toLocaleString() + "<br>Cases/1M pop: " + value.casesPerOneMillionToday.toLocaleString())
 
 
             var markerColorVar = markerColor(value.casesPerOneMillionYesterday);
             var  marker = getMarker(markerColorVar);
+            console.log(value.allCasesYesterday.toLocaleString());
             L.marker([value.point.lat, value.point.lon], {icon: marker}).addTo(layerGroupYesterday)
-                .bindPopup("<b><center>" + value.name + "</b></center>" + "<br> Cases: " + value.allCasesYesterday + "<br>Cases/1M pop: " + value.casesPerOneMillionYesterday)
+                .bindPopup("<b><center>" + value.name + "</b></center>" + "<br> Cases: " + value.allCasesYesterday.toLocaleString() + "<br>Cases/1M pop: " + value.casesPerOneMillionYesterday.toLocaleString())
         })
 
     </script>
