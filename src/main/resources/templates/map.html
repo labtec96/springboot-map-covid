@@ -183,7 +183,6 @@
 
             var markerColorVar = markerColor(value.casesPerOneMillionYesterday);
             var  marker = getMarker(markerColorVar);
-            console.log(value.allCasesYesterday.toLocaleString());
             L.marker([value.point.lat, value.point.lon], {icon: marker}).addTo(layerGroupYesterday)
                 .bindPopup("<b><center>" + value.name + "</b></center>" + "<br> Cases: " + value.allCasesYesterday.toLocaleString() + "<br>Cases/1M pop: " + value.casesPerOneMillionYesterday.toLocaleString())
         })
